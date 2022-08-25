@@ -63,7 +63,7 @@ function save-secret ($pwplaintext){
 }
 
 function read-secret{
-    $script:secret read-host "please enter Password" -AsSecureString
+    $script:secret = read-host "please enter Password" -AsSecureString
 }
 
 #----- Function checkfile -----#
@@ -87,28 +87,26 @@ function checkfile ($filetocheck)
 }
 
 #----- Function checkpath -----#
-function checkpath ($foldertocheck)
-{
-    if (Test-Path $foldertocheck )
-    {
+function checkpath ($foldertocheck) {
+    if (Test-Path $foldertocheck ) {
         writeLog INF ('Path: {0} already exsist' -f $foldertocheck)
         write-host ('Path: {0} already exsist' -f $foldertocheck) -ForegroundColor Green
     }
-    Else
-    {
+    Else {
         
         write-hoste ('Path: {0} dont exist' -f $foldertocheck) -ForegroundColor Gray 
-        try{
-        New-Item -ItemType Directory -Force -Path $foldertocheck
-        writeLog SUC ('Created Path {0}' -f $foldertocheck)
-        write-host ('Created Path {0}' -f $foldertocheck) -ForegroundColor Green
+        try {
+            New-Item -ItemType Directory -Force -Path $foldertocheck
+            writeLog SUC ('Created Path {0}' -f $foldertocheck)
+            write-host ('Created Path {0}' -f $foldertocheck) -ForegroundColor Green
+        }
+        catch {
+            writeLog ERR ('Failed to create Folder: {0} with Error: {1}' -f $foldertocheck, $error[0])
+        }
     }
-    catch{
-        writeLog ERR ('Failed to create Folder: {0} with Error: {1}' -f $foldertocheck, $error[0])
-    }
-    }
+}
 #----- Function checkfile-createfolder -----#
-function checkfile-createfolder ($filetocheck)
+function get-checkfile-create-folder ($filetocheck)
 {
     if (Test-Path $filetocheck -PathType leaf )
     {
