@@ -154,6 +154,26 @@ function writeToFile($description, $vaule, $correct) {
 
 }
 
+function testips {
+    param (
+        $ipstart,
+        $ipend
+    )
+    $ipstart = ($ipstart -split '\.').Trim()
+    $ipend = ($ipend -split '\.').Trim()
+
+    $array= @($ipstart[3]..$ipend[3])
+
+    foreach ($i in $array)
+    {
+        $iptotest = $ipstart[0]+'.'+$ipstart[1]+'.'+$ipstart[2]+'.'+$i
+        
+        Test-NetConnection $iptotest
+    }
+
+}
+
+
 #----- Entry Point -----#
 main
 
