@@ -5,7 +5,8 @@ $ipend = 192.168.1.254
 
 $port = '80'
 #>
-function testip {
+$path = 'C:\temp\del\net2.csv'
+function testips {
     param (
         $ipstart,
         $ipend
@@ -14,12 +15,14 @@ function testip {
     $ipend = ($ipend -split '\.').Trim()
 
     $array= @($ipstart[3]..$ipend[3])
-#Write-Host $array
+
     foreach ($i in $array)
     {
         $iptotest = $ipstart[0]+'.'+$ipstart[1]+'.'+$ipstart[2]+'.'+$i
         
-        Test-NetConnection $iptotest
+        #More Details
+        #Test-NetConnection $iptotest | export-csv -Append -Path $path
+        Test-NetConnection $iptotest | select remoteAddress, pingsucceeded | export-csv -Append -Path $path
     }
 
 }
